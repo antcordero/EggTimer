@@ -14,40 +14,55 @@ public class EggTimer extends JFrame {
     private JButton GOOButton;
     private JButton STOPButton;
     private JLabel labelTemporizador;
+    private JLabel lalbelDuro;
+    private JLabel labelCocido;
+    private JLabel labelPorAgua;
 
-    //atributos específicos para el tiempo
+    //Constantes para los Tiempos
+    private static final int TIEMPO_HUEVODURO = 600;
+    private static final int TIEMPO_HUEVOCOCIDO = 360;
+    private static final int TIEMPO_HUEVOPASADOPORAGUA = 180;
+
+    // Atributos específicos para el tiempo
     private Timer timer;
     private int segundosQueQuedan = 0;
 
-    //atributo para el sonido de alarma
+    // Atributo para el sonido de alarma
     private Clip clip;
 
     public EggTimer() {
         setTitle("Egg Timer");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setContentPane(panel1);
-        //setLocationRelativeTo(null);
-        //setSize(400, 250);
-        setBounds(550, 200, 450, 250);
+        setBounds(550, 200, 450, 400);
+
+        //Cargar las imágenes para los labels
+        ImageIcon huevoDuroIcon = new ImageIcon("imagenes/4_95px.png");
+        ImageIcon medioCocidoIcon = new ImageIcon("imagenes/1_150px.png");
+        ImageIcon pasadoPorAguaIcon = new ImageIcon("imagenes/3_95px.png");
+
+        //Asignar las imágenes a los JLabel correspondientes
+        lalbelDuro.setIcon(huevoDuroIcon);
+        labelCocido.setIcon(medioCocidoIcon);
+        labelPorAgua.setIcon(pasadoPorAguaIcon);
 
         //Acciones de los Botones
-        //Botones de opciones
         huevoDuroButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                establecerTiempo(600);  //10 minutos
+                establecerTiempo(TIEMPO_HUEVODURO); //10 minutos
             }
         });
         medioCocidoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                establecerTiempo(360);  //6 minutos
+                establecerTiempo(TIEMPO_HUEVOCOCIDO);  //6 minutos
             }
         });
         pasadoPorAguaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                establecerTiempo(180);  //3 minutos
+                establecerTiempo(TIEMPO_HUEVOPASADOPORAGUA);  //3 minutos
             }
         });
 
@@ -69,15 +84,14 @@ public class EggTimer extends JFrame {
         });
     }
 
-
     //Métodos
 
     /**
      * Establecer el tiempo según la opción del botón
-     * @param seconds
+     * @param segundos
      */
-    private void establecerTiempo(int seconds) {
-        segundosQueQuedan = seconds;
+    private void establecerTiempo(int segundos) {
+        segundosQueQuedan = segundos;
         actualizarLabel();
     }
 
@@ -102,13 +116,12 @@ public class EggTimer extends JFrame {
                         AudioInputStream audioIn = AudioSystem.getAudioInputStream(new File("sonidos/kitchen-timer-33043.wav"));
                         clip = AudioSystem.getClip();
                         clip.open(audioIn);
-                        //función para el sonido en bucle
+                        //Función para el sonido en bucle
                         clip.loop(Clip.LOOP_CONTINUOUSLY);
                     } catch (UnsupportedAudioFileException | IOException | LineUnavailableException ex) {
                         ex.printStackTrace();
                     }
                 }
-
             }
         });
         timer.start();
